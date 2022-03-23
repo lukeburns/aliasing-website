@@ -7,8 +7,10 @@
   let name = 'luke';
   let data;
   let available = null;
+  let alias;
   $: fetch(`/${name.toLowerCase()}`).then(r => r.json()).then(d => data = d).catch(console.error)
-  $: data ? isAvailable(data.alias).then(a => available = a).catch(console.error) : null
+  $: if (data && data.alias) { alias = data.alias.split('.').slice(-1)[0] }
+  $: alias ? isAvailable(alias).then(a => available = a).catch(console.error) : null
 
   onMount(async () => {
     origin = origin || window.location.hostname
@@ -52,7 +54,7 @@
         <div class="info">
           <div>{available === null ? 'The domain' : 'Looks like the domain'}</div>
           <p><a onclick="window.location.href=`http://{data.name}/`" href={`http://${data.name}/`}>{data.name}</a></p>
-          <div>aliased by the TLD</div>
+          <div>aliased by</div>
           <p><a onclick="window.location.href=`http://{data.alias}/`" href={`http://${data.alias}/`}>{data.alias}</a></p>
           <div>
             {#if available !== null}
@@ -66,7 +68,7 @@
           {/if}
         </div>
       </div>
-        <div class="register"><a class="button" href={`bob://openname?name=${data.alias}`}>{available ? 'Bid' : 'Open'} with Bob Wallet</a> <a class="button" href={`https://niami/domain/${data.alias}`}>{available ? 'Bid' : 'Open'} in Niami</a> <a class="button" href={`https://www.namebase.io/domains/${data.alias}`}>{available ? 'Bid' : 'Open'} on Namebase</a></div>
+        <div class="register"><a class="button" href={`bob://openname?name=${alias}`}>{available ? 'Bid' : 'Open'} with Bob Wallet</a> <a class="button" href={`https://niami/domain/${alias}`}>{available ? 'Bid' : 'Open'} in Niami</a> <a class="button" href={`https://www.namebase.io/domains/${alias}`}>{available ? 'Bid' : 'Open'} on Namebase</a></div>
     {:else}
       <p>Search to find the domain you'd like!</p>
     {/if}
