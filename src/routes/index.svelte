@@ -106,7 +106,7 @@
     <h3>About .{origin} domains</h3>
     <p>.{origin} is an experimental permissionless namespace — anyone can register SLDs by bidding on aliases that live on the Handshake blockchain.</p>
     <p>To resolve .{origin} domains, you'll need a dns resolver capable of resolving the <a href="https://github.com/lukeburns/hipr-aliasing"><code>aliasing</code></a> protocol.</p>
-    <p>If you're interested in aliasing your TLD, feel free to reach out on <a href="https://discord.gg/BSEzc7kY">Discord</a>. You'll have first dibs on SLDs, which you can then sell on the market.</p>
+    <p>If you're interested in aliasing your TLD, feel free to reach out on <a href="https://discord.gg/BSEzc7kY">Discord</a>. You can reserve SLDs prior to launch and will retain full control over the TLD itself (like this website).</p>
     <p>Made with &lt;3 by <a href="https://lukeburns/">lukeburns</a>.</p>
   </aside>
 </main>
