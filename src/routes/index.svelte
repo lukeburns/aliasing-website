@@ -79,9 +79,9 @@
   </article>
   <aside>
     <h3>About .{origin} domains</h3>
-    <p>.{origin} is a permissionless namespace — anyone can register SLDs by bidding on aliases that live on the Handshake blockchain.</p>
-    <p>To resolve .{origin} domains <emph>trustlessly</emph>, you need a dns resolver capable of resolving the <a href="https://github.com/lukeburns/hipr-aliasing"><code>aliasing</code> protocol</a>.</p>
-    <p>If you're interested in aliasing your TLD, feel free to reach out on <a href="https://discord.gg/BSEzc7kY">Discord</a>. You'll have first dibs on SLDs which you can sell on the market!</p>
+    <p>.{origin} is an experimental permissionless namespace — anyone can register SLDs by bidding on aliases that live on the Handshake blockchain.</p>
+    <p>To resolve .{origin} domains, you'll need a dns resolver capable of resolving the <a href="https://github.com/lukeburns/hipr-aliasing"><code>aliasing</code></a> protocol. <emph>Note: this protocol may change, so don't go registering a bunch of names all willy nilly.</emph></p>
+    <p>If you're interested in aliasing your TLD, feel free to reach out on <a href="https://discord.gg/BSEzc7kY">Discord</a>. You'll have first dibs on SLDs, which you can then sell on the market.</p>
     <p>Made with &lt;3 by <a onclick="window.location.href=`http://lukeburns/`" href="http://lukeburns/">lukeburns</a>.</p>
   </aside>
   <a class="bob" href="https://chrome.google.com/webstore/detail/bob-extension/ogcmjchbmdichlfelhmceldndgmgpcem"><img src="/bob.gif" /></a>
