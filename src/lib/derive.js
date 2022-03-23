@@ -7,8 +7,9 @@ export default function derive (name, seed, origin) {
   assert(typeof seed === 'string');
   assert(typeof origin === 'string');
 
-  name = rmdot(name);
-  origin = rmdot(origin);
+  name = rmdot(name).toLowerCase();
+  seed = rmdot(seed).toLowerCase();
+  origin = rmdot(origin).toLowerCase();
 
   const nameLabels = name.split('.');
   const count = origin.split('.').length;

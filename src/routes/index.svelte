@@ -7,7 +7,7 @@
   let name = 'luke';
   let data;
   let available = null;
-  $: fetch(`/${name}`).then(r => r.json()).then(d => data = d).catch(console.error)
+  $: fetch(`/${name.toLowerCase()}`).then(r => r.json()).then(d => data = d).catch(console.error)
   $: data ? isAvailable(data.alias).then(a => available = a).catch(console.error) : null
 
   onMount(async () => {
@@ -18,14 +18,14 @@
     }
   });
 
-  async function isAvailable (name) {
+  async function isAvailable (tld) {
     if (wallet instanceof Promise) {
       wallet = await wallet
     }
 
     if (wallet) {
       try {
-        await wallet.sendBid(name)
+        await wallet.sendBid(tld)
         return false
       } catch (err) {
         if (err.message.indexOf('Name is not available') === 0) {
@@ -51,13 +51,13 @@
     {#if name.length > 0 && data}
         <div class="info">
           <div>{available === null ? 'The domain' : 'Looks like the domain'}</div>
-          <p><a href={`http://${data.name}/`}>{data.name}</a></p>
+          <p><a onclick="window.location.href=`http://{data.name}/`" href={`http://${data.name}/`}>{data.name}</a></p>
           <div>aliased by the TLD</div>
-          <p><a href={`http://${data.alias}/`}>{data.alias}</a></p>
+          <p><a onclick="window.location.href=`http://{data.alias}/`" href={`http://${data.alias}/`}>{data.alias}</a></p>
           <div>
             {#if available !== null}
               {#if available === true}
-                is <strong>available!</strong> Bid before someone else does!
+                is <strong>available!</strong> Place your bid.
               {:else}
                 is unavailable.
               {/if}
@@ -73,8 +73,9 @@
   </article>
   <aside>
     <h3>About .{origin} domains</h3>
-    <p>.{origin} is a permissionless namespace — anyone can register SLDs by bidding on aliases that live on the blockchain.</p>
+    <p>.{origin} is a permissionless namespace — anyone can register SLDs by bidding on aliases that live on the Handshake blockchain.</p>
     <p>To resolve .{origin} domains <emph>trustlessly</emph>, you need a dns resolver capable of resolving the <a href="https://github.com/lukeburns/hipr-aliasing"><code>aliasing</code> protocol</a>.</p>
+    <p>Made with &lt;3 by <a onclick="window.location.href=`http://lukeburns/`" href="http://lukeburns/">lukeburns</a>.</p>
   </aside>
 </main>
 
@@ -86,6 +87,9 @@
   }
   aside {
     margin-top: 3em;
+  }
+  emph {
+    font-style: italic;
   }
   .info, input {
     font-family: "Computer Modern Bright", Helvetica, sans-serif;
