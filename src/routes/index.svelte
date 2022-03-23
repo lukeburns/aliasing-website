@@ -5,15 +5,16 @@
   let wallet;
   let input;
 
-  let name = 'luke';
+  let name = '';
   let available = null;
   let data;
   let alias;
-  $: fetch(`/${name.toLowerCase()}`).then(r => r.json()).then(d => data = d).catch(console.error)
+  $: if (name) fetch(`/${name.toLowerCase()}`).then(r => r.json()).then(d => data = d).catch(console.error)
   $: if (data && data.alias) { alias = data.alias.split('.').slice(-1)[0] }
   $: if (alias) isAvailable(alias).then(a => available = a).catch(console.error)
 
   onMount(async () => {
+    name = 'luke'
     origin = origin || window.location.hostname
     if (bob3) {
       wallet = bob3.connect()
@@ -37,6 +38,9 @@
         if (err.message.indexOf('Name is not available') === 0) {
           return false
         } else {
+          if (err.message.indexOf('user has unconfirmed tx') === 0) {
+            return null
+          }
           return true
         }
       }
@@ -57,13 +61,13 @@
     {#if name.length > 0 && data}
         <div class="info">
           <div>The domain</div>
-          <p><a onclick="window.location.href=`http://{data.name}/`" href={`http://${data.name}/`}>{data.name}</a></p>
+          <p><a href={`http://${data.name}/`}>{data.name}</a></p>
           <div>aliased by</div>
-          <p><a onclick="window.location.href=`http://{data.alias}/`" href={`http://${data.alias}/`}>{data.alias}</a></p>
+          <p><a href={`http://${data.alias}/`}>{data.alias}</a></p>
           <div>
             {#if available !== null}
               {#if available === true}
-                is <strong>available!</strong> Place your bid.
+                looks like it's <strong>available!</strong> Place your bid.
               {:else}
                 is unavailable.
               {/if}
@@ -72,25 +76,27 @@
           {/if}
         </div>
       </div>
-        <div class="register"><a class="button bob-wallet" href={`bob://openname?name=${alias}`}>{available ? 'Bid' : 'Open'} with Bob Wallet</a> <a class="button" href={`https://niami/domain/${alias}`}>{available ? 'Bid' : 'Open'} in Niami</a> <a class="button" href={`https://www.namebase.io/domains/${alias}`}>{available ? 'Bid' : 'Open'} on Namebase</a></div>
+      <div class="register"><a class="button bob-wallet" href={`bob://openname?name=${alias}`}>{available ? 'Bid' : 'Open'} with Bob Wallet</a> <a class="button" href={`https://niami/domain/${alias}`}>{available ? 'Bid' : 'Open'} in Niami</a> <a class="button" href={`https://www.namebase.io/domains/${alias}`}>{available ? 'Bid' : 'Open'} on Namebase</a></div>
     {:else}
       <p>Search to find the domain you'd like!</p>
     {/if}
   </article>
   <aside>
+    <h3>Prelaunch (bid at your own risk)</h3>
+    <p><emph>For any TLD that is aliasing SLDs, make sure you verify that the TLD owner has <a href="https://github.com/handshake-org/hsd/pull/567">relinquished control</a>, so that no one can take your SLD away.</emph> I have not yet done this, which means .dsub SLDs are not yet trustless! I intend to once the protocol looks like it's sufficiently stable to justify launching for real.</p>
+    <a class="bob" href="https://chrome.google.com/webstore/detail/bob-extension/ogcmjchbmdichlfelhmceldndgmgpcem"><img src="/bob.gif" /></a>
     <h3>About .{origin} domains</h3>
     <p>.{origin} is an experimental permissionless namespace — anyone can register SLDs by bidding on aliases that live on the Handshake blockchain.</p>
-    <p>To resolve .{origin} domains, you'll need a dns resolver capable of resolving the <a href="https://github.com/lukeburns/hipr-aliasing"><code>aliasing</code></a> protocol. <emph>Note: this protocol may change, so don't go registering a bunch of names all willy nilly.</emph></p>
+    <p>To resolve .{origin} domains, you'll need a dns resolver capable of resolving the <a href="https://github.com/lukeburns/hipr-aliasing"><code>aliasing</code></a> protocol.</p>
     <p>If you're interested in aliasing your TLD, feel free to reach out on <a href="https://discord.gg/BSEzc7kY">Discord</a>. You'll have first dibs on SLDs, which you can then sell on the market.</p>
-    <p>Made with &lt;3 by <a onclick="window.location.href=`http://lukeburns/`" href="http://lukeburns/">lukeburns</a>.</p>
+    <p>Made with &lt;3 by <a href="https://lukeburns/">lukeburns</a>.</p>
   </aside>
-  <a class="bob" href="https://chrome.google.com/webstore/detail/bob-extension/ogcmjchbmdichlfelhmceldndgmgpcem"><img src="/bob.gif" /></a>
 </main>
 
 <style>
   main {
     font-family: "Computer Modern Sans", Helvetica, sans-serif;
-    margin: 5em;
+    margin: 3em 5em;
     text-align: center;
   }
   aside {
@@ -109,6 +115,10 @@
   }
   .info {
     margin: 3em;
+  }
+  .info a {
+    color: #5469d4;
+    text-decoration: none;
   }
   .info p {
     font-size: 1.35em;
