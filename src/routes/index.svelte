@@ -68,7 +68,7 @@
           {/if}
         </div>
       </div>
-        <div class="register"><a class="button" href={`bob://openname?name=${alias}`}>{available ? 'Bid' : 'Open'} with Bob Wallet</a> <a class="button" href={`https://niami/domain/${alias}`}>{available ? 'Bid' : 'Open'} in Niami</a> <a class="button" href={`https://www.namebase.io/domains/${alias}`}>{available ? 'Bid' : 'Open'} on Namebase</a></div>
+        <div class="register"><a class="button bob-wallet" href={`bob://openname?name=${alias}`}>{available ? 'Bid' : 'Open'} with Bob Wallet</a> <a class="button" href={`https://niami/domain/${alias}`}>{available ? 'Bid' : 'Open'} in Niami</a> <a class="button" href={`https://www.namebase.io/domains/${alias}`}>{available ? 'Bid' : 'Open'} on Namebase</a></div>
     {:else}
       <p>Search to find the domain you'd like!</p>
     {/if}
@@ -109,6 +109,8 @@
   .info p {
     font-size: 1.25em;
     margin: 0.4em;
+    display: flex;
+    justify-content: center;
   }
   .button {
     border: 0;
@@ -128,5 +130,13 @@
     color: rgb(60, 66, 87);
     background-color: rgb(255, 255, 255);
     box-shadow: rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 12%) 0px 1px 1px 0px, rgb(60 66 87 / 16%) 0px 0px 0px 1px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(60 66 87 / 8%) 0px 2px 5px 0px;
+  }
+  @media only screen and (max-width: 600px) {
+    .bob, .bob-wallet {
+      display: none;
+    }
+    .info p {
+      font-size: 1em;
+    }
   }
 </style>
