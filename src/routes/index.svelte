@@ -61,8 +61,8 @@
 
   function insertParam(key,value) {
     if (history.pushState) {
-      const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + key + '=' + value;
-      window.history.pushState({ path: newurl }, '', newurl);
+      const path = window.location.protocol + "//" + window.location.host + window.location.pathname + (value ? ('?' + key + '=' + value) : '');
+      window.history.pushState({ path }, '', path);
     }
   }
 </script>
