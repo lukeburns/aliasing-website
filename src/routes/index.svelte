@@ -14,7 +14,7 @@
   $: if (name) { fetch(`/${name.toLowerCase()}?json`).then(r => r.json()).then(d => data = d).catch(console.error) } else { data = undefined }
   $: if (data && data.alias) { alias = data.alias.split('.').slice(-1)[0] } else { alias = undefined }
   $: if (alias) { isAvailable(alias).then(a => available = a).catch(console.error) } else { available = null }
-  $: if (w && name) { insertParam('name', name) }
+  $: if (w) { insertParam('name', name) }
 
   onMount(async () => {
     w = window;
