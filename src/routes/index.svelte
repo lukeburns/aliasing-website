@@ -101,7 +101,7 @@
   </article>
   <aside>
     <h3>Prelaunch (bid at your own risk)</h3>
-    <p><emph>For any TLD that is aliasing SLDs, make sure you verify that the TLD owner has <a href="https://github.com/handshake-org/hsd/pull/567">relinquished control</a>, so that no one can take your SLD away.</emph> I have not yet done this, which means .dsub SLDs are not yet trustless! I intend to once the protocol looks like it's sufficiently stable to justify launching for real.</p>
+    <p><emph>For any TLD that is aliasing SLDs, make sure you verify that the TLD owner <a href="https://github.com/handshake-org/hsd/pull/567">relinquishes control</a> before you bid, so that no one can take your SLD away.</emph> I have not yet done this, which means .dsub SLDs are not yet trustless! I intend to once the protocol looks like it's sufficiently stable to justify launching for real.</p>
     <a class="bob" href="https://chrome.google.com/webstore/detail/bob-extension/ogcmjchbmdichlfelhmceldndgmgpcem"><img src="/bob.gif" /></a>
     <h3>About .{origin} domains</h3>
     <p>.{origin} is an experimental permissionless namespace — anyone can register SLDs by bidding on aliases that live on the Handshake blockchain.</p>
