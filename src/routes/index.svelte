@@ -1,6 +1,7 @@
 <script>
   import { onMount } from 'svelte';
 
+  let w;
   let origin = import.meta.env.VITE_ORIGIN;
   let wallet;
   let input;
@@ -9,18 +10,26 @@
   let available = null;
   let data;
   let alias;
-  
-  $: if (name) { fetch(`/${name.toLowerCase()}`).then(r => r.json()).then(d => data = d).catch(console.error) } else { data = undefined }
+
+  $: if (name) { fetch(`/${name.toLowerCase()}?json`).then(r => r.json()).then(d => data = d).catch(console.error) } else { data = undefined }
   $: if (data && data.alias) { alias = data.alias.split('.').slice(-1)[0] } else { alias = undefined }
   $: if (alias) { isAvailable(alias).then(a => available = a).catch(console.error) } else { available = null }
+  $: if (w && name) { insertParam('name', name) }
 
   onMount(async () => {
+    w = window;
     name = 'luke'
     origin = origin || window.location.hostname
+
+    const url = new URL(window.location)
+    const n = url.searchParams.get('name')
+    name = n
+
     if (bob3) {
       wallet = bob3.connect()
       wallet = await wallet
     }
+
     setTimeout(() => {
       input.focus();
     }, 10)
@@ -47,6 +56,13 @@
       }
     } else {
       return null
+    }
+  }
+
+  function insertParam(key,value) {
+    if (history.pushState) {
+      const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + key + '=' + value;
+      window.history.pushState({ path: newurl }, '', newurl);
     }
   }
 </script>

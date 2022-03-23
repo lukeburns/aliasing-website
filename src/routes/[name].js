@@ -19,7 +19,7 @@ export async function get ({ url, params: { name } }) {
 
   const body = derive(name, seed, origin);
 
-  if (typeof url.searchParams.get('txt') === 'string') {
+  if (typeof url.searchParams.get('json') !== 'string') {
     return { body: body.alias };
   }
 
