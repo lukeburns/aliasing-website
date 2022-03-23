@@ -9,9 +9,10 @@
   let available = null;
   let data;
   let alias;
-  $: if (name) fetch(`/${name.toLowerCase()}`).then(r => r.json()).then(d => data = d).catch(console.error)
-  $: if (data && data.alias) { alias = data.alias.split('.').slice(-1)[0] }
-  $: if (alias) isAvailable(alias).then(a => available = a).catch(console.error)
+  
+  $: if (name) { fetch(`/${name.toLowerCase()}`).then(r => r.json()).then(d => data = d).catch(console.error) } else { data = undefined }
+  $: if (data && data.alias) { alias = data.alias.split('.').slice(-1)[0] } else { alias = undefined }
+  $: if (alias) { isAvailable(alias).then(a => available = a).catch(console.error) } else { available = null }
 
   onMount(async () => {
     name = 'luke'
@@ -51,6 +52,7 @@
 </script>
 
 <svelte:head>
+  <title>{data ? data.name : `dsub`}</title>
   <link rel="stylesheet" type="text/css" href="/fonts.css">
 </svelte:head>
 
