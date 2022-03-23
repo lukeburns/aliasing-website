@@ -3,14 +3,15 @@
 
   let origin = import.meta.env.VITE_ORIGIN;
   let wallet;
+  let input;
 
   let name = 'luke';
-  let data;
   let available = null;
+  let data;
   let alias;
   $: fetch(`/${name.toLowerCase()}`).then(r => r.json()).then(d => data = d).catch(console.error)
   $: if (data && data.alias) { alias = data.alias.split('.').slice(-1)[0] }
-  $: alias ? isAvailable(alias).then(a => available = a).catch(console.error) : null
+  $: if (alias) isAvailable(alias).then(a => available = a).catch(console.error)
 
   onMount(async () => {
     origin = origin || window.location.hostname
@@ -18,6 +19,9 @@
       wallet = bob3.connect()
       wallet = await wallet
     }
+    setTimeout(() => {
+      input.focus();
+    }, 10)
   });
 
   async function isAvailable (tld) {
@@ -49,10 +53,10 @@
 <main>
   <h2>Register a {origin ? `.${origin} ` : ''}domain!</h2>
   <article>
-    <input bind:value={name} placeholder="luke">{origin ? `.${origin} ` : ''}
+    <input bind:this={input} bind:value={name} placeholder="luke">{origin ? `.${origin} ` : ''}
     {#if name.length > 0 && data}
         <div class="info">
-          <div>{available === null ? 'The domain' : 'Looks like the domain'}</div>
+          <div>The domain</div>
           <p><a onclick="window.location.href=`http://{data.name}/`" href={`http://${data.name}/`}>{data.name}</a></p>
           <div>aliased by</div>
           <p><a onclick="window.location.href=`http://{data.alias}/`" href={`http://${data.alias}/`}>{data.alias}</a></p>
@@ -107,7 +111,7 @@
     margin: 3em;
   }
   .info p {
-    font-size: 1.25em;
+    font-size: 1.35em;
     margin: 0.4em;
     display: flex;
     justify-content: center;
