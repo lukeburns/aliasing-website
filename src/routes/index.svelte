@@ -42,15 +42,12 @@
 
     if (wallet) {
       try {
-        await wallet.sendBid(tld)
+        await wallet.sendRedeem(tld)
         return false
       } catch (err) {
-        if (err.message.indexOf('Name is not available') === 0) {
+        if (err.message.indexOf('No reveals to redeem') === 0) {
           return false
         } else {
-          if (err.message.indexOf('user has unconfirmed tx') === 0) {
-            return null
-          }
           return true
         }
       }
