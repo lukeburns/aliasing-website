@@ -1,2 +1,119 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script>
+  import { onMount } from 'svelte';
+
+  let origin = import.meta.env.VITE_ORIGIN;
+  let wallet;
+
+  let name = 'luke';
+  let data;
+  let available = null;
+  $: fetch(`/${name}`).then(r => r.json()).then(d => data = d).catch(console.error)
+  $: data ? isAvailable(data.alias).then(a => available = a).catch(console.error) : null
+
+  onMount(async () => {
+    origin = origin || window.location.hostname
+    if (bob3) {
+      wallet = bob3.connect()
+      wallet = await wallet
+    }
+  });
+
+  async function isAvailable (name) {
+    if (wallet instanceof Promise) {
+      wallet = await wallet
+    }
+
+    if (wallet) {
+      try {
+        await wallet.sendBid(name)
+        return false
+      } catch (err) {
+        if (err.message.indexOf('Name is not available') === 0) {
+          return false
+        } else {
+          return true
+        }
+      }
+    } else {
+      return null
+    }
+  }
+</script>
+
+<svelte:head>
+  <link rel="stylesheet" type="text/css" href="/fonts.css">
+</svelte:head>
+
+<main>
+  <h2>Register a {origin ? `.${origin} ` : ''}domain!</h2>
+  <article>
+    <input bind:value={name} placeholder="luke">{origin ? `.${origin} ` : ''}
+    {#if name.length > 0 && data}
+        <div class="info">
+          <div>{available === null ? 'The domain' : 'Looks like the domain'}</div>
+          <p><a href={`http://${data.name}/`}>{data.name}</a></p>
+          <div>aliased by the TLD</div>
+          <p><a href={`http://${data.alias}/`}>{data.alias}</a></p>
+          <div>
+            {#if available !== null}
+              {#if available === true}
+                is <strong>available!</strong> Bid before someone else does!
+              {:else}
+                is unavailable.
+              {/if}
+          {:else}
+            may be available. Check below!
+          {/if}
+        </div>
+      </div>
+        <div class="register"><a class="button" href={`bob://openname?name=${data.alias}`}>{available ? 'Bid' : 'Open'} with Bob Wallet</a> <a class="button" href={`https://niami/domain/${data.alias}`}>{available ? 'Bid' : 'Open'} in Niami</a> <a class="button" href={`https://www.namebase.io/domains/${data.alias}`}>{available ? 'Bid' : 'Open'} on Namebase</a></div>
+    {:else}
+      <p>Search to find the domain you'd like!</p>
+    {/if}
+  </article>
+  <aside>
+    <h3>About .{origin} domains</h3>
+    <p>.{origin} is a permissionless namespace — anyone can register SLDs by bidding on aliases that live on the blockchain.</p>
+    <p>To resolve .{origin} domains <emph>trustlessly</emph>, you need a dns resolver capable of resolving the <a href="https://github.com/lukeburns/hipr-aliasing"><code>aliasing</code> protocol</a>.</p>
+  </aside>
+</main>
+
+<style>
+  main {
+    font-family: "Computer Modern Sans", Helvetica, sans-serif;
+    margin: 5em;
+    text-align: center;
+  }
+  aside {
+    margin-top: 3em;
+  }
+  .info, input {
+    font-family: "Computer Modern Bright", Helvetica, sans-serif;
+  }
+  .info {
+    margin: 3em;
+  }
+  .info p {
+    font-size: 1.25em;
+    margin: 0.4em;
+  }
+  .button {
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    color: white;
+    background-color: rgb(84, 105, 212);
+    box-shadow: rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 12%) 0px 1px 1px 0px, rgb(84 105 212) 0px 0px 0px 1px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(60 66 87 / 8%) 0px 2px 5px 0px;
+    border-radius: 4px;
+    font-size: 1em;
+    font-weight: 500;
+    padding: 4px 8px;
+    display: inline-block;
+    text-decoration: none;
+  }
+  .button:hover {
+    color: rgb(60, 66, 87);
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 12%) 0px 1px 1px 0px, rgb(60 66 87 / 16%) 0px 0px 0px 1px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(60 66 87 / 8%) 0px 2px 5px 0px;
+  }
+</style>

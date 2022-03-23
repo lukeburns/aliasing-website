@@ -13,5 +13,12 @@
     "@sveltejs/kit": "next",
     "svelte": "^3.44.0"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "bcrypto": "^5.4.0",
+    "blake3": "^2.1.7",
+    "blake3-wasm": "^2.1.5",
+    "bs32": "^0.1.6",
+    "hs-client": "^0.0.10"
+  }
 }
